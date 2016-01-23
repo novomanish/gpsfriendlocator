@@ -2,6 +2,8 @@
  * Public API version: 0.1
  * 
  * GPS.subscribe (phoneNumbers, callback<coordinates>);
+ *      phoneNumber: 1. phoneNumber of user (with country code ex: +91..)
+ *                   2. "SELF" if user is self
  *      coordinates  -> {user:{displayName, phoneNumber}, latitude, longitude}
  * 
  * GPS.unsubscribe (phoneNumbers);
@@ -32,7 +34,7 @@ var GPS = {
      * @Public: GPS.subscribe (phoneNumber, callback(coordinates));
      */
     subscribe: function(phoneNumber, callback){
-        Cloud.testGetGeolocation(phoneNumber, function(coordinates){
+        GPSCloud.testGetGeolocation(phoneNumber, function(coordinates){
             callback(coordinates);
         });
     },
@@ -46,7 +48,7 @@ var GPS = {
     _geolocationSuccess: function(position){
         GPS._coords = position.coords;
         Events.trigger("GEO:change", GPS._getLastCoordinates());
-        Cloud.testStoreSelfGeolocation(GPS._coords.latitude, GPS._coords.longitude);
+        GPSCloud.testStoreSelfGeolocation(GPS._coords.latitude, GPS._coords.longitude);
     },
     _geolocationError: function(){
         alert("Error occurred while getting gps location");

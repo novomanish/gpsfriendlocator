@@ -44,20 +44,26 @@ var app = {
             Storage.put("phoneNumber",$("#phone").val());
         });
         GPS.startPublishing();
-        GPS.subscribe(app.displayGPSCoordinates, ["+918792892306", "+918792892374"]);
+        
+        GPS.subscribe("SELF", app.displaySelfGPSCoordinates);
+        GPS.subscribe("+918792892374", app.displayMoverGPSCoordinates);
     },
     i:0,
-    displayGPSCoordinates: function(coordinates){
-        //var selfCoordinates = coordinates[0] || coordinates;
-        var screen = document.getElementById("screen");
+    displaySelfGPSCoordinates: function(coordinates){
+        var div = document.getElementById("self");
+        app._displayGPSCoordinates(div, coordinates);
+    },
+    displayMoverGPSCoordinates: function(coordinates){
+        var div = document.getElementById("mover");
+        app._displayGPSCoordinates(div, coordinates);
+    },
+    _displayGPSCoordinates: function(div, coordinates){
+        var screen = div;
         screen.innerHTML = "count: "+app.i++;
 
-        for(var i=1; i<coordinates.length; i++){
-            var coord = coordinates[i];
-            screen.innerHTML += "<br />Phone: "+coord.user.phoneNumber;
-            screen.innerHTML += "<br />Lat: "+coord.latitude;
-            screen.innerHTML += "<br />Long: "+coord.longitude;
-            screen.innerHTML += "<br />";
-        }
+        screen.innerHTML += "<br />Phone: "+ ((coordinates.user.isSelf)?"SELF":coordinates.user.phoneNumber);
+        screen.innerHTML += "<br />Lat: "+coordinates.latitude;
+        screen.innerHTML += "<br />Long: "+coordinates.longitude;
+        screen.innerHTML += "<br />";
     }
 };

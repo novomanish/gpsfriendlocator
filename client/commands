@@ -1,3 +1,7 @@
 #Plugin Add
+phonegap platform add browser
+phonegap platform add android
+phonegap platform add ios
+
 phonegap plugin add cordova-plugin-geolocation
 phonegap plugin add cordova-plugin-splashscreen

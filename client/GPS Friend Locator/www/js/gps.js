@@ -1,14 +1,14 @@
 /* 
  * Public API version: 0.1
  * 
- * GPS.subscribe (callback<coordinates>, phoneNumbers<List>);
- * coordinates  -> 0: self coordinates
- *              -> 1+: queried user's coordinates
- *              ->>coordinate : {user:{displayName, phoneNumber}, latitude, longitude}
+ * GPS.subscribe (phoneNumbers, callback<coordinates>);
+ *      coordinates  -> {user:{displayName, phoneNumber}, latitude, longitude}
  * 
+ * GPS.unsubscribe (phoneNumbers);
+ *
  * GPS.startPublishing (auth): starts publishing self's geolocation
- * auth  -> {token, path}
- * puts: {latitude, longitude} on given path
+ *      auth  -> {token, path}
+ *      puts: {latitude, longitude} on given path
  *
  * GPS.stopPublishing (auth): stops publishing self geolocation
  */
@@ -29,36 +29,18 @@ var GPS = {
     },
 
     /* 
-     * @Public: GPS.subscribe (callback(coordinates), phoneNumbers<List>);
+     * @Public: GPS.subscribe (phoneNumber, callback(coordinates));
      */
-    subscribe: function(callback, phoneNumbers){
-        var map = {};
-        var _phoneNumbers = phoneNumbers.slice();
-        
-        var c = function(){
-            var coordinates = [];
-            coordinates[0] = {};
-            
-            for(var i=0; i<phoneNumbers.length; i++){
-                var phoneNumber = phoneNumbers[i];
-                coordinates[i+1] = map[phoneNumber];
-            }
+    subscribe: function(phoneNumber, callback){
+        Cloud.testGetGeolocation(phoneNumber, function(coordinates){
             callback(coordinates);
-
-        };
-
-        var f = function(coordinates){
-            map[coordinates.user.phoneNumber] = coordinates;
-            _phoneNumbers.splice(_phoneNumbers.indexOf(coordinates.user.phoneNumber));
-            if(_phoneNumbers.length === 0){
-                c();
-            }
-        };
-        for(var i=0; i<phoneNumbers.length; i++){
-            var phoneNumber = phoneNumbers[i];
-            map[phoneNumber] = {};
-            Cloud.testGetGeolocation(phoneNumber, f);
-        }
+        });
+    },
+    /* 
+     * @Public: GPS.unsubscribe (phoneNumber): Stops further updates for a particular number
+     */
+    unsubscribe: function(phoneNumber){
+        // TODO Implement this
     },
 
     _geolocationSuccess: function(position){
@@ -108,7 +90,7 @@ var GPS = {
     },
     testSubscribe: function(callback, users){
         Events.on("GEO:change", this._clipEvent(callback));
-        this._startWatch();
+        this.startPublishing();
     },
 
 };

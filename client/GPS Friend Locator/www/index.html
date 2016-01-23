@@ -32,7 +32,7 @@
     <body>
         <div class="app">
         <div>
-            <input type="number" id="phone">
+            <input type="text" id="phone" name="phoneNumber">
             <button id="savePhone">Save</button>
             <button id="alertPhone">Alert Phone Number</button>
         </div>
@@ -46,11 +46,15 @@
 -->
         </div>
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/jquery-2.2.0.js"></script>
+        
+        <script type="text/javascript" src="js/libs/firebase.js"></script>
+        <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
+        
         <script type="text/javascript" src="js/storage.js"></script>
         <script type="text/javascript" src="js/events.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/gps.js"></script>
+        <script type="text/javascript" src="js/cloud.js"></script>
 
         <script type="text/javascript">
             app.initialize();

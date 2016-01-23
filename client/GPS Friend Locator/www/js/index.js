@@ -34,7 +34,6 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         //app.receivedEvent('deviceready');
-        GPS.subscribe(app.displayGPSCoordinates);
         $("#alertPhone").on("click", function(){
             alert(Storage.get("phoneNumber"));
         });
@@ -44,12 +43,21 @@ var app = {
         $("#savePhone").on("click", function(){
             Storage.put("phoneNumber",$("#phone").val());
         });
+        GPS.startPublishing();
+        GPS.subscribe(app.displayGPSCoordinates, ["+918792892306", "+918792892374"]);
     },
     i:0,
     displayGPSCoordinates: function(coordinates){
+        //var selfCoordinates = coordinates[0] || coordinates;
         var screen = document.getElementById("screen");
         screen.innerHTML = "count: "+app.i++;
-        screen.innerHTML += "<br />Lat: "+coordinates.latitude;
-        screen.innerHTML += "<br />Long: "+coordinates.longitude;
+
+        for(var i=1; i<coordinates.length; i++){
+            var coord = coordinates[i];
+            screen.innerHTML += "<br />Phone: "+coord.user.phoneNumber;
+            screen.innerHTML += "<br />Lat: "+coord.latitude;
+            screen.innerHTML += "<br />Long: "+coord.longitude;
+            screen.innerHTML += "<br />";
+        }
     }
 };

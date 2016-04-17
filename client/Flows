@@ -1,0 +1,8 @@
+1. Flow 1: Entry
+
+Detect If mobile registered ==> phone number exist in local storage
+
+No --> Present Dialog for Entering Phone Number and Name, Button to save.
+    Save --> Sends SMS for verficiation
+            System waits for verification
+            On verification done, Stores Number and forwards to Flow 1.

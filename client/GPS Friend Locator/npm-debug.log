@@ -1,0 +1,138 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/mjaiswal/.nvm/v5.2.0/bin/node',
+1 verbose cli   '/Users/mjaiswal/.nvm/v5.2.0/bin/npm',
+1 verbose cli   '-g',
+1 verbose cli   'install',
+1 verbose cli   'ios-sim',
+1 verbose cli   'ios-display' ]
+2 info using npm@3.3.12
+3 info using node@v5.2.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData ios-sim
+8 silly fetchPackageMetaData ios-display
+9 silly fetchNamedPackageData ios-sim
+10 silly mapToRegistry name ios-sim
+11 silly mapToRegistry using default registry
+12 silly mapToRegistry registry https://registry.npmjs.org/
+13 silly mapToRegistry uri https://registry.npmjs.org/ios-sim
+14 silly fetchNamedPackageData ios-display
+15 silly mapToRegistry name ios-display
+16 silly mapToRegistry using default registry
+17 silly mapToRegistry registry https://registry.npmjs.org/
+18 silly mapToRegistry uri https://registry.npmjs.org/ios-display
+19 verbose request uri https://registry.npmjs.org/ios-sim
+20 verbose request no auth needed
+21 info attempt registry request try #1 at 8:38:22 PM
+22 verbose request id e2263bb234362644
+23 http request GET https://registry.npmjs.org/ios-sim
+24 verbose request uri https://registry.npmjs.org/ios-display
+25 verbose request no auth needed
+26 info attempt registry request try #1 at 8:38:22 PM
+27 http request GET https://registry.npmjs.org/ios-display
+28 http 200 https://registry.npmjs.org/ios-sim
+29 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+29 verbose headers   etag: '"3XCU5ZCGHFJPWT20ZIO1ZXT1S"',
+29 verbose headers   'content-type': 'application/json',
+29 verbose headers   'cache-control': 'max-age=300',
+29 verbose headers   'content-length': '29527',
+29 verbose headers   'accept-ranges': 'bytes',
+29 verbose headers   date: 'Wed, 13 Apr 2016 15:08:20 GMT',
+29 verbose headers   via: '1.1 varnish',
+29 verbose headers   age: '10',
+29 verbose headers   connection: 'keep-alive',
+29 verbose headers   'x-served-by': 'cache-ams4136-AMS',
+29 verbose headers   'x-cache': 'HIT',
+29 verbose headers   'x-cache-hits': '1',
+29 verbose headers   'x-timer': 'S1460560100.515359,VS0,VE0',
+29 verbose headers   vary: 'Accept-Encoding' }
+30 silly get cb [ 200,
+30 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+30 silly get     etag: '"3XCU5ZCGHFJPWT20ZIO1ZXT1S"',
+30 silly get     'content-type': 'application/json',
+30 silly get     'cache-control': 'max-age=300',
+30 silly get     'content-length': '29527',
+30 silly get     'accept-ranges': 'bytes',
+30 silly get     date: 'Wed, 13 Apr 2016 15:08:20 GMT',
+30 silly get     via: '1.1 varnish',
+30 silly get     age: '10',
+30 silly get     connection: 'keep-alive',
+30 silly get     'x-served-by': 'cache-ams4136-AMS',
+30 silly get     'x-cache': 'HIT',
+30 silly get     'x-cache-hits': '1',
+30 silly get     'x-timer': 'S1460560100.515359,VS0,VE0',
+30 silly get     vary: 'Accept-Encoding' } ]
+31 verbose get saving ios-sim to /Users/mjaiswal/.npm/registry.npmjs.org/ios-sim/.cache.json
+32 http 404 https://registry.npmjs.org/ios-display
+33 verbose headers { 'content-type': 'application/json',
+33 verbose headers   'cache-control': 'max-age=0',
+33 verbose headers   'content-length': '2',
+33 verbose headers   'accept-ranges': 'bytes',
+33 verbose headers   date: 'Wed, 13 Apr 2016 15:08:21 GMT',
+33 verbose headers   via: '1.1 varnish',
+33 verbose headers   age: '0',
+33 verbose headers   connection: 'keep-alive',
+33 verbose headers   'x-served-by': 'cache-ams4138-AMS',
+33 verbose headers   'x-cache': 'MISS',
+33 verbose headers   'x-cache-hits': '0',
+33 verbose headers   'x-timer': 'S1460560101.032897,VS0,VE175',
+33 verbose headers   vary: 'Accept-Encoding' }
+34 silly get cb [ 404,
+34 silly get   { 'content-type': 'application/json',
+34 silly get     'cache-control': 'max-age=0',
+34 silly get     'content-length': '2',
+34 silly get     'accept-ranges': 'bytes',
+34 silly get     date: 'Wed, 13 Apr 2016 15:08:21 GMT',
+34 silly get     via: '1.1 varnish',
+34 silly get     age: '0',
+34 silly get     connection: 'keep-alive',
+34 silly get     'x-served-by': 'cache-ams4138-AMS',
+34 silly get     'x-cache': 'MISS',
+34 silly get     'x-cache-hits': '0',
+34 silly get     'x-timer': 'S1460560101.032897,VS0,VE175',
+34 silly get     vary: 'Accept-Encoding' } ]
+35 silly fetchPackageMetaData Error: Registry returned 404 for GET on https://registry.npmjs.org/ios-display
+35 silly fetchPackageMetaData     at makeError (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+35 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+35 silly fetchPackageMetaData     at Request._callback (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+35 silly fetchPackageMetaData     at Request.self.callback (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:198:22)
+35 silly fetchPackageMetaData     at emitTwo (events.js:88:13)
+35 silly fetchPackageMetaData     at Request.emit (events.js:173:7)
+35 silly fetchPackageMetaData     at Request.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:1082:10)
+35 silly fetchPackageMetaData     at emitOne (events.js:83:20)
+35 silly fetchPackageMetaData     at Request.emit (events.js:170:7)
+35 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+35 silly fetchPackageMetaData  error for ios-display { [Error: Registry returned 404 for GET on https://registry.npmjs.org/ios-display] pkgid: 'ios-display', statusCode: 404, code: 'E404' }
+36 silly rollbackFailedOptional Starting
+37 silly rollbackFailedOptional Finishing
+38 silly runTopLevelLifecycles Starting
+39 silly runTopLevelLifecycles Finishing
+40 silly install printInstalled
+41 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/ios-display
+41 verbose stack     at makeError (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+41 verbose stack     at CachingRegistryClient.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:242:14)
+41 verbose stack     at Request._callback (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+41 verbose stack     at Request.self.callback (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:198:22)
+41 verbose stack     at emitTwo (events.js:88:13)
+41 verbose stack     at Request.emit (events.js:173:7)
+41 verbose stack     at Request.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:1082:10)
+41 verbose stack     at emitOne (events.js:83:20)
+41 verbose stack     at Request.emit (events.js:170:7)
+41 verbose stack     at IncomingMessage.<anonymous> (/Users/mjaiswal/.nvm/v5.2.0/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+42 verbose statusCode 404
+43 verbose pkgid ios-display
+44 verbose cwd /Users/mjaiswal/Organized/Praveena Project/app/git/gpsfriendlocator/client/GPS Friend Locator
+45 error Darwin 14.5.0
+46 error argv "/Users/mjaiswal/.nvm/v5.2.0/bin/node" "/Users/mjaiswal/.nvm/v5.2.0/bin/npm" "-g" "install" "ios-sim" "ios-display"
+47 error node v5.2.0
+48 error npm  v3.3.12
+49 error code E404
+50 error 404 Registry returned 404 for GET on https://registry.npmjs.org/ios-display
+50 error 404
+50 error 404 'ios-display' is not in the npm registry.
+50 error 404 You should bug the author to publish it (or use the name yourself!)
+50 error 404
+50 error 404 Note that you can also install from a
+50 error 404 tarball, folder, http url, or git url.
+51 verbose exit [ 1, true ]

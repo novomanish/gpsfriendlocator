@@ -48,7 +48,12 @@ var GPS = {
     _geolocationSuccess: function(position){
         GPS._coords = position.coords;
         Events.trigger("GEO:change", GPS._getLastCoordinates());
-        GPSCloud.testStoreSelfGeolocation(GPS._coords.latitude, GPS._coords.longitude);
+        
+        app.models.selfUser.set({
+            "latitude": GPS._coords.latitude,
+            "longitude": GPS._coords.longitude
+        });
+
     },
     _geolocationError: function(){
         alert("Error occurred while getting gps location");

@@ -25,23 +25,108 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data:" />
+        
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
         <!-- <link rel="stylesheet" type="text/css" href="css/index.css" /> -->
         <title>GPS Friend Locator</title>
-    </head>
+
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css" />
+
+        <script type="text/javascript" src="cordova.js"></script>
+        
+        <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
+        <script type="text/javascript" src="js/libs/jquery.mobile-1.4.5.js"></script>
+
+        <script type="text/javascript" src="js/libs/underscore-1.8.3.js"></script>
+        <script type="text/javascript" src="js/libs/backbone-1.3.3.js"></script>
+        <script type="text/javascript" src="js/libs/firebase.js"></script>
+        <script type="text/javascript" src="js/libs/backbonefire-0.5.1.js"></script>
+        <script type="text/javascript" src="js/libs/handlebars-v4.0.5.js"></script>
+
+        
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/flow-manager.js"></script>
+        <script type="text/javascript" src="js/storage.js"></script>
+        <script type="text/javascript" src="js/events.js"></script>
+        <script type="text/javascript" src="js/gps.js"></script>
+        <script type="text/javascript" src="js/gps-cloud.js"></script>
+        <script type="text/javascript" src="js/otp.js"></script>
+        <script type="text/javascript" src="js/sms-manager.js"></script>
+        <script type="text/javascript" src="js/views/views.js"></script>
+        <script type="text/javascript" src="js/models/models.js"></script>
+
+     </head>
     <body>
-            <div id="map_canvas" style="height:500px;">
-                Hello this is map area
-            </div>
-<!--        
-        <div class="app">
-    
-            <div>
-                <input type="text" id="phone" name="phoneNumber">
-                <button id="savePhone">Save</button>
-                <button id="alertPhone">Alert Phone Number</button>
-            </div>
+        <!-- Entry Page -->
+        <div data-role="page" id="splash">
+            <div data-role="header">
+                <h1>GPS Friend Locator</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <p>
+                    Welcome <br />
+                    Project By: Praveena Ratiya <br />
+                    M.Tech. <br />
+                </p>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Global Academy of Technology</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+
+        <!-- Entry -->
+        <div data-role="page" id="entry">
+            <div data-role="header">
+                <h1>Entry Page</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <div>
+                    <input type="text" name="phoneNumber" placeholder="Number">
+                    <input type="text" name="userName" placeholder="Name">
+                    <button id="savePhone">Save</button>
+                </div>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Global Academy of Technology</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+        <!-- Map -->
+        <div data-role="page" id="map">
+            <div data-role="header">
+                <h1>Map</h1>
+            </div><!-- /header -->
+
+            <div id="map_canvas" role="main" class="ui-content">
+                <!-- Colleagues Search -->
+                <div id="colleagueSearch">
+                    <form class="ui-filterable">
+                        <input id="inset-autocomplete-input" data-type="search" placeholder="Search to track..">
+                    </form>
+                    <ul id="myFilterable" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
+                    </ul>
+                    <script id="coleagueListTemplate" type="text/x-handlebar-template">
+                        {{#each colleagues}}
+                            <li><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">{{name}} {{id}}</a></li>
+                        {{/each}}
+                        <li id="inviteLi" data-filtertext="{{search}}" data-icon="plus"><a href="#">Invite {{search}}</a></li>
+                    </script>                
+                </div>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Global Academy of Technology</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+        <div class="app" style="display:none;">
             <h1>Welcome to GPS Friend Locator</h1>
             <div id="self"></div>
             <div id="mover"></div>
@@ -50,22 +135,10 @@
                 <p class="event received">Device is Ready</p>
             </div>
         </div>
--->
-        <script type="text/javascript" src="cordova.js"></script>
-        
-        <script type="text/javascript" src="js/libs/firebase.js"></script>
-        <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
-        
-        <script type="text/javascript" src="js/storage.js"></script>
-        <script type="text/javascript" src="js/events.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/gps.js"></script>
-        <script type="text/javascript" src="js/gps-cloud.js"></script>
-        <script type="text/javascript" src="js/otp.js"></script>
-        <script type="text/javascript" src="js/SMSManager.js"></script>
 
         <script type="text/javascript">
             app.initialize();
         </script>
-    </body>
+
+   </body>
 </html>

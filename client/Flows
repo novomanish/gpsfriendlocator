@@ -1,4 +1,4 @@
-1. Flow 1: Entry
+1. Flow 1: /entry :: Entry
 
 Detect If mobile registered ==> phone number exist in local storage
 
@@ -6,3 +6,21 @@ No --> Present Dialog for Entering Phone Number and Name, Button to save.
     Save --> Sends SMS for verficiation
             System waits for verification
             On verification done, Stores Number and forwards to Flow 1.
+Yes --> Forwards to Flow 2: Map with User Search
+
+
+2. Flow 2: /map :: Map, User Search Button, "Trackers List" Button
+
+3. Flow 3: /search :: Search User
+        list of existing colleagues, 
+            online/offline indication, 
+            "Send Track Request" Button
+                Message -> Invitation Sent
+
+4. Flow 4: /trackers :: Trackers List
+    Currently Tracking
+        "Deny" Button
+    Pendings List
+            "Accept" and "Reject" Button
+    Others Below
+        "Deny" Button

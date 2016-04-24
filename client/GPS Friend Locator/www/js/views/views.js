@@ -40,7 +40,6 @@ var EntryView = BaseView.extend({
 
         this.model.once("sync", function(){
           FlowManager.navigate("#map");
-          GPS.startPublishing();
         });
         this.model.fetch();
       }else{
@@ -57,6 +56,7 @@ var EntryView = BaseView.extend({
       this.model.once("sync", function(){
         app.UID = app.models.selfUser.id;
         $(document).trigger("models:selfUser:ready");
+        GPS.startPublishing();
       });
 
       this.model.on("sync", function(){
@@ -79,6 +79,8 @@ var EntryView = BaseView.extend({
       alert("Please enter your name");
       return;
     }
+
+    number = utils.unWrapNumber(number);
 
     // alert("Sending OTP:"+otp+", number:"+number);
     Storage.put("phoneNumber",number);
@@ -125,9 +127,6 @@ var MapView = BaseView.extend({
 
     this.map = plugin.google.maps.Map.getMap();
     this.$el.on("pageshow", $.proxy(this.render, this));
-    this.$el.find("._mapSearchInput").on("click", function(){
-      FlowManager.navigate("#colleagues", {"transition": "slide"});
-    });
   },
   trackUser: function(userId){
     if(this._currentTrackingUser){
@@ -186,7 +185,7 @@ var MapView = BaseView.extend({
     that.map.animateCamera({
       'target': COLLEAGUE_LATLONG,
       'tilt': 0,
-      'zoom': 10,
+      'zoom': 50,
       'bearing': 0
     });
 
@@ -202,6 +201,9 @@ var MapView = BaseView.extend({
     if(!app.views.trackRequestReceptionView){
       app.views.trackRequestReceptionView = new TrackRequestReceptionView();
     }
+    if(!app.views.profileView){
+      app.views.profileView = new ProfileView();
+    }
     this.map.setDiv(this.$el.find("#map_canvas")[0]);
     this.map.setMyLocationEnabled(true);
     
@@ -215,7 +217,7 @@ var ColleaguesView = Backbone.View.extend({
   initialize: function(options) {
     FlowManager.register("#colleagues", $.proxy(this.preRender, this));
     this.model = app.models.modelColleagues = new ModelColleagues();
-    this.model.on("sync", $.proxy(this.sync, this));
+    this.model.on("sync", $.proxy(this.handleColleaguesSync, this));
 
     this.$input = this.$el.find("#inset-autocomplete-input");
     this.$ul = this.$el.find("._colleaguesList");
@@ -239,14 +241,24 @@ var ColleaguesView = Backbone.View.extend({
 
     if(!value){
         this.$ul.find("#inviteLi").hide();
+        this.setContacts([]);
     }else{
       this.$ul.find("#inviteLi").show();
       this.$ul.find("#inviteLi").attr("data-filtertext", value);
       this.$ul.find("#inviteLi").find("a").html("Invite "+value);
+
+      // find all contacts with 'Bob' in any name field
+      var options      = new ContactFindOptions();
+      options.filter   = value;
+      options.multiple = true;
+      options.desiredFields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers];
+      options.hasPhoneNumber = true;
+      var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers];
+      navigator.contacts.find(fields, $.proxy(this.setContacts, this), null, options);
     }
   },
 
-  sync: function(){
+  handleColleaguesSync: function(){
     var colleagues = {},
       that = this;
     var list = utils.getModelKeys(this.model);
@@ -267,37 +279,53 @@ var ColleaguesView = Backbone.View.extend({
 
   },
   handleInvitationAccept: function(userId){
-      app.views.mapView.trackUser(userId);
+    FlowManager.navigate("#map");
+    app.views.mapView.trackUser(userId);
   },
 
   handleClick: function(evt, el){
-    var userId = $(evt.currentTarget).attr("data-userid");
+    var userId,
+      number;
+
+    userId = $(evt.currentTarget).attr("data-userid");
     if(!userId){
       // Invitation Request
-      var number = this.$input.val();
-      // TODO Number Check
+
+      // Check if contacts clicked
+      var contactId = $(evt.currentTarget).attr("data-contactid");
+      if(contactId){
+        number = contactId;
+      }else{
+        number = this.$input.val();
+      }
+      number = utils.unWrapNumber(number);
 
       var outgoingModel = new ModelOutgoingRequest({id: number});
       outgoingModel.set(app.UID, true);
+      utils.alert("Invitation Sent");
 
       this.$input.val("");
-      this.$ul.listview( "refresh");
+      this.$input.trigger("keyup");
 
     }else{
 
       this.$input.val("");
-      this.$ul.listview( "refresh");
+      this.$input.trigger("keyup");
+
       app.views.mapView.trackUser(userId);
+      FlowManager.navigate("#map");
     }
     
   },
-  _colleagues:[],
+  _colleagues:null,
   setColleagues: function(colleagues){
     this._colleagues = colleagues;
     this.render();
   },
   _contacts:[],
   setContacts: function(contacts){
+    console.log("Found Contacts");
+    console.log(contacts);
     this._contacts = contacts;
     this.render();
   },
@@ -307,6 +335,7 @@ var ColleaguesView = Backbone.View.extend({
 
       var template = Handlebars.compile(this.$template.html());
       var html = template({
+        colleagueNotInitialized: !this._colleagues,
         colleagues: this._colleagues,
         contacts: this._contacts,
         search: this.$input.val()
@@ -401,4 +430,65 @@ var TrackRequestReceptionView = Backbone.View.extend({
   }
 });
 
+var AlertView = Backbone.View.extend({
+  el: "#alertPopup",
+  show: function(msg){
+    this.$el.find("._content").html(msg);
+    this.$el.popup("open");
+  }
+});
 
+
+var ProfileView = BaseView.extend({
+  el: "#profile",
+  initialize: function() {
+    FlowManager.register("#profile", $.proxy(this.render, this));
+    this.$template = this.$el.find("._bodyTemplate");
+    this.$body = this.$el.find("._body");
+    this.listenTo(app.models.selfUser, "sync", $.proxy(this.render, this));
+
+  },
+  init: function(){
+    if(!this._isInitialized){
+      this._isInitialized = true;
+      this.listenTo(app.models.selfUser, "sync", $.proxy(this.render, this));
+    }
+  },
+  render: function(){
+//    this.init();
+    this.constructor.__super__.render.apply(this, arguments);
+
+    utils.hideLoading();
+
+    var template = Handlebars.compile(this.$template.html());
+    var html = template({
+      name: app.models.selfUser.get("name"),
+      number: app.UID,
+      latitude: app.models.selfUser.get("latitude"),
+      longitude: app.models.selfUser.get("longitude"),
+      avatar: app.models.selfUser.get("avatar")
+    });
+    this.$body.html(html);
+
+    this.$body.find("._file").on("change", $.proxy(this.handleFileUpload, this));
+    this.$body.find("._remove").on("click", $.proxy(this.removeAvatar, this));
+  },
+  removeAvatar: function(){
+    app.models.selfUser.unset("avatar");
+  },
+  handleFileUpload: function(evt){
+    var f = evt.target.files[0];
+    var reader = new FileReader();
+    reader.onload = (function(theFile) {
+      return function(e) {
+        var filePayload = e.target.result;
+        // Generate a location that can't be guessed using the file's contents and a random number
+        utils.showLoading("Uploading...");
+        app.models.selfUser.set("avatar", filePayload);
+        app.models.selfUser.save();
+      };
+    })(f);
+
+    reader.readAsDataURL(f);
+  }
+});

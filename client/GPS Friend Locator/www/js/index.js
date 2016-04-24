@@ -33,10 +33,13 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        $("div[data-role=popup]").removeClass("ui-screen-hidden");
+        $("div[data-role=popup]").enhanceWithin().popup();
         app.models = {};
         
         app.views = {};
         app.views.entryView = new EntryView();
+        app.views.alertView = new AlertView();
         
         $(document).on("models:selfUser:ready", function(){
             app.views.mapView = new MapView({selfUser: app.models.selfUser});
@@ -51,8 +54,6 @@ var app = {
         };
         $("#splash").on("pageshow", f);
 
-
-        
 
         f();
 

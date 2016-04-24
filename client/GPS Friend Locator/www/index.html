@@ -104,28 +104,18 @@
         <!-- Map -->
         <div data-role="page" id="map">
             <div data-role="header">
-                <!-- Colleagues Search -->
-                <input class="_mapSearchInput" data-type="search" placeholder="Click here to track.." readonly="true">
+                <fieldset class="ui-grid-a">
+                    <div class="ui-block-a" style="width:80%">
+                        <a href="#colleagues" data-transition="slide" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-search" data-theme="b">Click here to track..</a>
+                        </div>
+                    <div class="ui-block-b" style="width:20%">
+                        <a href="#menu" data-transition="slide" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-bars" data-theme="b">Menu</a>
+                    </div>
+                </fieldset>
             </div><!-- /header -->
 
             <div id="map_canvas" role="main" class="ui-content">
                 
-                <!-- Popup -->
-                <div data-role="popup" id="trackRequestReceiveDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;max-height:200px">
-                    <div data-role="header" data-theme="a">
-                        <h1>Track Request</h1>
-                    </div>
-                    <div role="main" class="ui-content">
-                        <h3 class="ui-title _content"></h3>
-                        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Ignore</a>
-                        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b _invAccept" data-rel="back" data-transition="flow">Allow</a>
-                        <script id="trackRequestReceiveDialogContent" type="text/x-handlebar-template">
-                            {{name}} ({{number}}) is requesting permission to access your location
-                        </script>                
-
-                    </div>
-                </div><!-- /Popup -->
-
             </div><!-- /content -->
 
             <div data-role="footer" data-position="fixed">
@@ -134,27 +124,46 @@
         </div><!-- /page -->
 
 
-        <!-- Map -->
+        <!-- Colleagues -->
         <div data-role="page" id="colleagues" data-transition="slide">
             <div data-role="header">
-                <!-- Colleagues Search -->
-                <div id="colleagueSearch">
-                    <form class="ui-filterable">
-                        <input id="inset-autocomplete-input" data-type="search" placeholder="Search to track..">
-                    </form>
-                </div>
+                <a data-role="button" data-rel="back" data-icon="back">Back</a>
+                <h1>Colleagues</h1>
             </div><!-- /header -->
 
+            <!-- Colleagues Search -->
+            <input id="inset-autocomplete-input" data-type="search" placeholder="Search to track..">
             <ul role="main" class="_colleaguesList ui-content" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="false" data-input="#inset-autocomplete-input">
             </ul>
-
             <script id="coleagueListTemplate" type="text/x-handlebar-template">
-                <li id="inviteLi" data-filtertext="{{search}}" data-icon="plus" class="ui-screen-hidden"><a href="#">Invite {{search}}</a></li>
+                <li id="inviteLi" data-filtertext="{{search}}" data-icon="plus" class="ui-screen-hidden"><a href="#">Invite {{search}}
+                </a></li>
+                {{#if colleagueNotInitialized}}
+                    <li>Loading...</li>
+                {{/if}}
                 <li data-role="list-divider">Colleagues</li>
                 {{#each colleagues}}
-                    <li data-userId="{{id}}"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">{{name}} {{id}}</a></li>
+                    <li data-userId="{{id}}"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+                        {{#if avatar}}
+                        <img src="{{avatar}}" style="position:absolute;
+    top:0;
+    bottom:0;
+    margin:auto;" />
+                        {{/if}}
+                        <h2>{{name}}</h2>
+                        <p>{{id}}</p>
+                    </a></li>
                 {{/each}}
                 <li data-role="list-divider">Phonebook</li>
+                {{#each contacts}}
+                    {{#each phoneNumbers}}
+                        <li data-contactId="{{value}}">
+                            <a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+                                <h2>{{../displayName}}</h2>
+                                <p>{{value}}</p>
+                        </a></li>
+                    {{/each}}
+                {{/each}}
             </script>                
 
             <div data-role="footer" data-position="fixed">
@@ -163,9 +172,89 @@
         </div><!-- /page -->
 
 
+    <!-- Menu -->
+    <div id="menu" data-role="page">
+        <div data-role="header">
+            <a data-role="button" data-rel="back" data-icon="back">Back</a>
+            <h1>Menu</h1>
+        </div><!-- /header -->
+        <ul role="main" class="ui-content" data-role="listview" data-inset="true">
+            <li><a href="#profile" data-transition="slide" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+                Profile
+            </a></li>
+            <li><a href="#colleagues" data-transition="slide" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+                Colleagues
+            </a></li>
+        </ul>
+        <div data-role="footer" data-position="fixed">
+            <h4>Global Academy of Technology</h4>
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <!-- Profile -->
+    <div id="profile" data-role="page">
+        <div data-role="header">
+            <a data-role="button" data-rel="back" data-icon="back">Back</a>
+            <h1>Profile</h1>
+        </div><!-- /header -->
+        <div role="main" class="ui-content _body ui-body ui-body-a ui-corner-all">
+        </div>
+            <script class="_bodyTemplate" type="text/x-handlebar-template">
+                
+                <div style="text-align: center;">
+                {{#if avatar}}
+                    <img src="{{avatar}}" style="max-width:100px;max-height:100px"/>
+                    <button class="_remove ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-delete">Remove Avatar</button>
+                {{else}}
+                    <img src="img/default-avatar.jpg" style="max-width:100px;max-height:100px"/>
+                    <input class="_file" type="file" accept="image/*" capture="camera">
+                {{/if}}
+                </div>
+                <h2>{{name}}</h2>
+                <p>{{number}}</p>
+                <p> Latitude: {{latitude}}</p>
+                <p> Longitude: {{longitude}} </p>
+            </script>                
+        <div data-role="footer" data-position="fixed">
+            <h4>Global Academy of Technology</h4>
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <!-- Popup -->
+    <div data-role="popup" id="trackRequestReceiveDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;max-height:200px" class="ui-screen-hidden">
+        <div data-role="header" data-theme="a">
+            <h1>Track Request</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <h3 class="ui-title _content"></h3>
+            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Ignore</a>
+            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b _invAccept" data-rel="back" data-transition="flow">Allow</a>
+            <script id="trackRequestReceiveDialogContent" type="text/x-handlebar-template">
+                {{name}} ({{number}}) is requesting permission to access your location
+            </script>                
+
+        </div>
+    </div><!-- /Popup -->
+
+    <!-- Alert Popup -->
+    <div data-role="popup" id="alertPopup" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;max-height:200px" class="ui-screen-hidden">
+        <div data-role="header" data-theme="a">
+            <h1>Alert</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <h3 class="ui-title _content"></h3>
+            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-b" data-rel="back">Ok</a>
+        </div>
+    </div><!-- /Alert Popup -->
+
+
+
+
+
         <script type="text/javascript">
             app.initialize();
         </script>
+
 
    </body>
 </html>

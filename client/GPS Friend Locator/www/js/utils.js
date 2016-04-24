@@ -10,7 +10,26 @@ var utils = {
     },
     hideLoading: function(){
         $.mobile.loading( "hide");
+    },
+    alert: function(msg){
+        app.views.alertView.show(msg);
     }
+};
+
+utils.unWrapNumber = function(number){
+    if(!number){
+        return number;
+    }
+    number = number.toString();
+    if(number.indexOf("+") > -1){
+        number = number.substr(3, number.length-3);
+    }else{
+        if(number.startsWith("0")){
+            number = number.substr(1, number.length-1);
+        }
+    }
+    return number;
+
 };
 
 utils.getModelKeys = function(model){
@@ -28,16 +47,16 @@ var Relator = function(){
 };
 Relator.prototype = {
     relate: function(list, modelClass, successCallback){
-        if(list.length === 0){
-            successCallback([]);
-            return;
-        }
         this._list = list;
         this._modelClass = modelClass;
         this._listModel = {};
         this._resolved = {};
         this._successCallback = successCallback;
 
+        if(list.length === 0){
+            successCallback([]);
+            return;
+        }
         this._list.forEach($.proxy(this._resolve, this));
     },
     _resolve: function(id){

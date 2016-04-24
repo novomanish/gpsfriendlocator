@@ -42,50 +42,23 @@ var app = {
             app.views.mapView = new MapView({selfUser: app.models.selfUser});
         });
 
-        FlowManager.register("#entry", app.flowEntry);
         FlowManager.register("#map", app.flowMap);
 
+        var f = function(){
+            setTimeout(function(){
+                FlowManager.navigate("#entry");
+            }, 1000);
+        };
+        $("#splash").on("pageshow", f);
 
 
-        setTimeout(function(){
-            FlowManager.navigate("#entry");
-        }, 1000);
+        
 
+        f();
 
         /*
         GPS.subscribe("SELF", app.displaySelfGPSCoordinates);
         GPS.subscribe("+918792892374", app.displayMoverGPSCoordinates);*/
-    },
-    flowEntry: function(){
-        var number = Storage.get("phoneNumber");
-
-        if(!number){
-            if(!SMS) {
-                alert( 'SMS plugin not ready' );
-                return;
-            }else{
-               // alert( 'SMS plugin is ready' );
-            }
-
-            app.views.entryView.render();
-            $.mobile.navigate("#entry");
-        }else{
-            if(!app.models.selfUser){
-                app.views.entryView.model = app.models.selfUser = new ModelUser({id: number});
-                app.models.selfUser.once("sync", function(){
-                    app.UID = app.models.selfUser.id;
-                    $(document).trigger("models:selfUser:ready");
-                });
-            }
-
-            FlowManager.navigate("#map");
-            GPS.startPublishing();
-        }
-
-    },
-
-    flowMap: function(){
-        $.mobile.navigate("#map");
     },
     i:0,
     displaySelfGPSCoordinates: function(coordinates){

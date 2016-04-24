@@ -6,4 +6,5 @@ phonegap platform add ios
 phonegap plugin add cordova-plugin-geolocation
 phonegap plugin add cordova-plugin-splashscreen
 phonegap plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyAT5D87YGEjiOTZW62hahBfEd9s4mOzX9o" --variable API_KEY_FOR_IOS="AIzaSyCpe6DMIYTBBySolFKUd59XyHK0e9myo_0"
-
+phonegap plugin add cordova-plugin-statusbar
+phonegap plugin add cordova-plugin-contacts

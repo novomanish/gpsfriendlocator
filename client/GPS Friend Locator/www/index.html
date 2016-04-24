@@ -36,7 +36,9 @@
 
         <script type="text/javascript" src="cordova.js"></script>
         
-        <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script>
+<!--        <script type="text/javascript" src="js/libs/jquery-2.2.0.js"></script> -->
+        <script type="text/javascript" src="js/libs/jquery-1.10.2.js"></script>
+    
         <script type="text/javascript" src="js/libs/jquery.mobile-1.4.5.js"></script>
 
         <script type="text/javascript" src="js/libs/underscore-1.8.3.js"></script>
@@ -56,6 +58,7 @@
         <script type="text/javascript" src="js/sms-manager.js"></script>
         <script type="text/javascript" src="js/views/views.js"></script>
         <script type="text/javascript" src="js/models/models.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
 
      </head>
     <body>
@@ -73,7 +76,7 @@
                 </p>
             </div><!-- /content -->
 
-            <div data-role="footer">
+            <div data-role="footer" data-position="fixed">
                 <h4>Global Academy of Technology</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
@@ -93,7 +96,7 @@
                 </div>
             </div><!-- /content -->
 
-            <div data-role="footer">
+            <div data-role="footer" data-position="fixed">
                 <h4>Global Academy of Technology</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
@@ -101,40 +104,64 @@
         <!-- Map -->
         <div data-role="page" id="map">
             <div data-role="header">
-                <h1>Map</h1>
+                <!-- Colleagues Search -->
+                <input class="_mapSearchInput" data-type="search" placeholder="Click here to track.." readonly="true">
             </div><!-- /header -->
 
             <div id="map_canvas" role="main" class="ui-content">
-                <!-- Colleagues Search -->
-                <div id="colleagueSearch">
-                    <form class="ui-filterable">
-                        <input id="inset-autocomplete-input" data-type="search" placeholder="Search to track..">
-                    </form>
-                    <ul id="myFilterable" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
-                    </ul>
-                    <script id="coleagueListTemplate" type="text/x-handlebar-template">
-                        {{#each colleagues}}
-                            <li><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">{{name}} {{id}}</a></li>
-                        {{/each}}
-                        <li id="inviteLi" data-filtertext="{{search}}" data-icon="plus"><a href="#">Invite {{search}}</a></li>
-                    </script>                
-                </div>
+                
+                <!-- Popup -->
+                <div data-role="popup" id="trackRequestReceiveDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;max-height:200px">
+                    <div data-role="header" data-theme="a">
+                        <h1>Track Request</h1>
+                    </div>
+                    <div role="main" class="ui-content">
+                        <h3 class="ui-title _content"></h3>
+                        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Ignore</a>
+                        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b _invAccept" data-rel="back" data-transition="flow">Allow</a>
+                        <script id="trackRequestReceiveDialogContent" type="text/x-handlebar-template">
+                            {{name}} ({{number}}) is requesting permission to access your location
+                        </script>                
+
+                    </div>
+                </div><!-- /Popup -->
+
             </div><!-- /content -->
 
-            <div data-role="footer">
+            <div data-role="footer" data-position="fixed">
                 <h4>Global Academy of Technology</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
 
-        <div class="app" style="display:none;">
-            <h1>Welcome to GPS Friend Locator</h1>
-            <div id="self"></div>
-            <div id="mover"></div>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
+
+        <!-- Map -->
+        <div data-role="page" id="colleagues" data-transition="slide">
+            <div data-role="header">
+                <!-- Colleagues Search -->
+                <div id="colleagueSearch">
+                    <form class="ui-filterable">
+                        <input id="inset-autocomplete-input" data-type="search" placeholder="Search to track..">
+                    </form>
+                </div>
+            </div><!-- /header -->
+
+            <ul role="main" class="_colleaguesList ui-content" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="false" data-input="#inset-autocomplete-input">
+            </ul>
+
+            <script id="coleagueListTemplate" type="text/x-handlebar-template">
+                <li id="inviteLi" data-filtertext="{{search}}" data-icon="plus" class="ui-screen-hidden"><a href="#">Invite {{search}}</a></li>
+                <li data-role="list-divider">Colleagues</li>
+                {{#each colleagues}}
+                    <li data-userId="{{id}}"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">{{name}} {{id}}</a></li>
+                {{/each}}
+                <li data-role="list-divider">Phonebook</li>
+            </script>                
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Global Academy of Technology</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
 
         <script type="text/javascript">
             app.initialize();

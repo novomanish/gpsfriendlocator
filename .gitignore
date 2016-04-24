@@ -3,4 +3,7 @@ client/GPS Friend Locator/platforms
 
 client/GPS Friend Locator/plugins
 
+client/cordova-plugin-googlemaps-master
+client/dummy
+
 server/gps-server/node_modules
